@@ -1,0 +1,10 @@
+albumentations
+torch
+numpy==1.26.4
+config
+pandas
+tqdm
+pillow==9.5.0
+scikit-learn
+efficientnet_pytorch
+torchvision
