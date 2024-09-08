@@ -24,7 +24,7 @@ def train_one_epoch(loader, model, optimizer, loss_fn, scaler, device):
 
         with torch.cuda.amp.autocast():
             scores=model(data)
-            loss=loss_fn(scores.float(), targets.float())
+            loss=loss_fn(scores, targets.unsqueeze(1).float())
         losses.append(loss.item())
 
         optimizer.zero_grad()
@@ -37,18 +37,18 @@ def train_one_epoch(loader, model, optimizer, loss_fn, scaler, device):
 
 def main():
     train_ds = DRDataset(
-        images_folder="/Users/rajkhera/CV-Project/data/train_set/train_resized/",
-        path_to_csv="/Users/rajkhera/CV-Project/data/train_set/trainLabels.csv",
+        images_folder="./data/train_set/train_resized/",
+        path_to_csv="./data/train_set/trainLabels.csv",
         transform=config.val_transforms,
     )
     val_ds = DRDataset(
-        images_folder="/Users/rajkhera/CV-Project/data/train_set/train_resized/",
-        path_to_csv="/Users/rajkhera/CV-Project/data/train_set/valLabels.csv",
+        images_folder="./data/train_set/train_resized/",
+        path_to_csv="./data/train_set/valLabels.csv",
         transform=config.val_transforms,
     )
     test_ds = DRDataset(
-        images_folder="/Users/rajkhera/CV-Project/data/train_set/train_resized/",
-        path_to_csv="/Users/rajkhera/CV-Project/data/train_set/trainLabels.csv",
+        images_folder="./data/train_set/train_resized/",
+        path_to_csv="./data/train_set/trainLabels.csv",
         transform=config.val_transforms,
         train=False,
     )
@@ -75,7 +75,7 @@ def main():
     model._fc = nn.Linear(1536, 1)
     model = model.to(config.DEVICE)
     optimizer = optim.Adam(model.parameters(), lr=config.LEARNING_RATE, weight_decay=config.WEIGHT_DECAY)
-    scaler = torch.cuda.amp.GradScaler()
+    scaler = torch.amp.GradScaler()
 
     if config.LOAD_MODEL and config.CHECKPOINT_FILE in os.listdir():
         load_checkpoint(torch.load(config.CHECKPOINT_FILE), model, optimizer, config.LEARNING_RATE)
