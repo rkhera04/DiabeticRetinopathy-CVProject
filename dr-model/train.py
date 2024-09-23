@@ -2,6 +2,7 @@ import torch
 from torch import nn, optim
 import os
 import config
+import img_transform
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from sklearn.metrics import cohen_kappa_score
@@ -39,17 +40,17 @@ def main():
     train_ds = DRDataset(
         images_folder="./data/train_set/train_resized/",
         path_to_csv="./data/train_set/trainLabels.csv",
-        transform=config.val_transforms,
+        transform=img_transform.val_transforms,
     )
     val_ds = DRDataset(
         images_folder="./data/train_set/train_resized/",
         path_to_csv="./data/train_set/valLabels.csv",
-        transform=config.val_transforms,
+        transform=img_transform.val_transforms,
     )
     test_ds = DRDataset(
         images_folder="./data/train_set/train_resized/",
         path_to_csv="./data/train_set/trainLabels.csv",
-        transform=config.val_transforms,
+        transform=img_transform.val_transforms,
         train=False,
     )
     test_loader = DataLoader(
@@ -75,7 +76,7 @@ def main():
     model._fc = nn.Linear(1536, 1)
     model = model.to(config.DEVICE)
     optimizer = optim.Adam(model.parameters(), lr=config.LEARNING_RATE, weight_decay=config.WEIGHT_DECAY)
-    scaler = torch.amp.GradScaler()
+    scaler = torch.cuda.amp.GradScaler()
 
     if config.LOAD_MODEL and config.CHECKPOINT_FILE in os.listdir():
         load_checkpoint(torch.load(config.CHECKPOINT_FILE), model, optimizer, config.LEARNING_RATE)

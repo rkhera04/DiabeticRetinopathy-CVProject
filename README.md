@@ -48,7 +48,6 @@ The dataset used in this project is provided by a Kaggle competition. It include
   - **config.py**: Holds configuration settings and hyperparameters for the project.
   - **dataset.py**: Manages dataset loading and preprocessing.
   - **resize_img.py**: Script for resizing images to a uniform size.
-  - **test.ipynb**: Jupyter notebook for testing and evaluating the model.
   - **train.py**: The main script used for training the model.
   - **utils.py**: Includes utility functions to support training and evaluation processes.
 - **data**:

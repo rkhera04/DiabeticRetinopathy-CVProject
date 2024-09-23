@@ -1,4 +1,4 @@
-import config
+import img_transform
 import os 
 import pandas as pd
 import numpy as np
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     dataset = DRDataset(
         images_folder="/Users/rajkhera/CV-Project/data/train_set/train_resized/",
         path_to_csv="/Users/rajkhera/CV-Project/data/train_set/trainLabels.csv",
-        transform=config.val_transforms,
+        transform=img_transform.val_transforms,
     )
     loader = DataLoader(
         dataset=dataset, batch_size=32, num_workers=2, shuffle=True, pin_memory=True
