@@ -9,8 +9,8 @@ LEARNING_RATE = 1e-4
 WEIGHT_DECAY = 5e-4
 BATCH_SIZE = 64
 NUM_EPOCHS = 100
-#NUM_WORKERS = 8
-NUM_WORKERS = 20
+NUM_WORKERS = 8
+# NUM_WORKERS = 20
 CHECKPOINT_FILE = "b3.pth.tar"
 PIN_MEMORY = True
 SAVE_MODEL = True
@@ -20,10 +20,18 @@ LOAD_MODEL = True
 
 train_transforms = A.Compose(
     [
-        A.Resize(width=150, height=120),
-        A.RandomCrop(width=120,height=120),
+        A.Resize(width=760, height=760),
+        A.RandomCrop(height=728, width=728),
+        A.HorizontalFlip(p=0.5),
+        A.VerticalFlip(p=0.5),
+        A.RandomRotate90(p=0.5),
+        A.Blur(p=0.3),
+        A.CLAHE(p=0.3),
+        A.ColorJitter(p=0.3),
+        A.CoarseDropout(max_holes=12, max_height=20, max_width=20, p=0.3),
+        A.IAAAffine(shear=30, rotate=0, p=0.2, mode="constant"),
         A.Normalize(
-            mean=[0.3199, 0.2240, 0.1690],
+            mean=[0.3199, 0.2240, 0.1609],
             std=[0.3020, 0.2183, 0.1741],
             max_pixel_value=255.0,
         ),
@@ -33,9 +41,9 @@ train_transforms = A.Compose(
 
 val_transforms = A.Compose(
     [
-        A.Resize(width=120, height=120),
+        A.Resize(height=728, width=728),
         A.Normalize(
-            mean=[0.3199, 0.2240, 0.1690],
+            mean=[0.3199, 0.2240, 0.1609],
             std=[0.3020, 0.2183, 0.1741],
             max_pixel_value=255.0,
         ),
