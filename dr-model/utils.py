@@ -3,6 +3,8 @@ import pandas as pd
 import config
 import numpy as np
 from tqdm import tqdm
+import warnings
+import torch.nn.functional as F
 
  
 def make_prediction(model, loader, output_csv="submission.csv"):
@@ -58,3 +60,44 @@ def load_checkpoint(checkpoint, model, optimizer, lr):
 
     for param_group in optimizer.param_groups:
         param_group["lr"] = lr
+
+def get_csv_for_blend(loader, model, output_csv_file):
+    warnings.warn("Important to have shuffle=False (and to ensure batch size is even size) when running get_csv_for_blend also set val_transforms to train_loader!")
+    model.eval()
+    filename_first = []
+    filename_second = []
+    labels_first = []
+    labels_second = []
+    all_features = []
+
+    for idx, (images, y, image_files) in enumerate(tqdm(loader)):
+        images = images.to(config.DEVICE)
+
+        with torch.no_grad():
+            features = F.adaptive_avg_pool2d(
+                model.extract_features(images), output_size=1
+            )
+            features_logits = features.reshape(features.shape[0] // 2, 2, features.shape[1])
+            preds = model(images).reshape(images.shape[0] // 2, 2, 1)
+            new_features = (
+                torch.cat([features_logits, preds], dim=2)
+                .view(preds.shape[0], -1)
+                .cpu()
+                .numpy()
+            )
+            all_features.append(new_features)
+            filename_first += image_files[::2]
+            filename_second += image_files[1::2]
+            labels_first.append(y[::2].cpu().numpy())
+            labels_second.append(y[1::2].cpu().numpy())
+
+    all_features = np.concatenate(all_features, axis=0)
+    df = pd.DataFrame(
+        data=all_features, columns=[f"f_{idx}" for idx in range(all_features.shape[1])]
+    )
+    df["label_first"] = np.concatenate(labels_first, axis=0)
+    df["label_second"] = np.concatenate(labels_second, axis=0)
+    df["file_first"] = filename_first
+    df["file_second"] = filename_second
+    df.to_csv(output_csv_file, index=False)
+    model.train()
