@@ -26,8 +26,12 @@ The project classifies retina images into the following five classes:
 - **3** - Severe
 - **4** - Proliferative Diabetic Retinopathy
 
-![An example of an eye image rated 0 (No Diabetic Retinopathy)](.data/sample_image.jpeg)
+<br>
+
+<img src="data/sample_image.jpeg" alt="An example of an eye image rated 0 (No Diabetic Retinopathy)" width="300"/>
+
 *Figure 1: An example of an eye image rated 0 (No Diabetic Retinopathy).*
+
 
 
 ## Dataset
