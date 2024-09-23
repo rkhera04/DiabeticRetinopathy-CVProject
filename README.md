@@ -18,13 +18,17 @@ This project aims to create an automated system to classify diabetic retinopathy
 
 ## Overview
 
-The project leverages classifies retina images into the following five classes:
+The project classifies retina images into the following five classes:
 
 - **0** - No Diabetic Retinopathy
 - **1** - Mild
 - **2** - Moderate
 - **3** - Severe
 - **4** - Proliferative Diabetic Retinopathy
+
+![An example of an eye image rated 0 (No Diabetic Retinopathy)](.data/sample_image.jpeg)
+*Figure 1: An example of an eye image rated 0 (No Diabetic Retinopathy).*
+
 
 ## Dataset
 
