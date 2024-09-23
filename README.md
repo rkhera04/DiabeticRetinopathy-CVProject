@@ -28,7 +28,7 @@ The project classifies retina images into the following five classes:
 
 <br>
 
-<img src="data/sample_image.jpeg" alt="An example of an eye image rated 0 (No Diabetic Retinopathy)" width="300"/>
+<img src="data/sample_image.jpeg" alt="An example of an eye image rated 0 (No Diabetic Retinopathy)" width="400"/>
 
 *Figure 1: An example of an eye image rated 0 (No Diabetic Retinopathy).*
 
