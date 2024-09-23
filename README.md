@@ -8,8 +8,9 @@ This project aims to create an automated system to classify diabetic retinopathy
 
 - [Overview](#overview)
 - [Dataset](#dataset)
+- [File Descriptions](#file-descriptions)
 - [Model Architecture](#model-architecture)
-- [Preprocessing](#image-preprocessing)
+- [Image Preprocessing](#image-preprocessing)
 - [Training](#training)
 - [Results](#results)
 - [Installation](#installation)
